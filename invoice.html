@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Facture</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+ /* =============================
+   FACTURE STYLE (GREEN WOW)
+============================= */
+
+body {
+  font-family: "Arial", sans-serif;
+  background: #0b0f0c;
+  color: #eaffea;
+  margin: 0;
+  padding: 30px;
+}
+
+/* Title */
+h2 {
+  text-align: center;
+  color: #00ff66;
+  font-size: 32px;
+  margin-bottom: 25px;
+  text-shadow: 0 0 10px #00ff66, 0 0 20px #00cc44;
+}
+
+/* Invoice Box */
+#invoice {
+  max-width: 600px;
+  margin: auto;
+  background: #111;
+  padding: 30px;
+  border-radius: 18px;
+  border: 3px solid #00ff66;
+  box-shadow: 0 0 25px rgba(0, 255, 102, 0.7);
+  font-size: 16px;
+}
+
+/* Text */
+#invoice strong {
+  color: #00ff66;
+  font-weight: bold;
+}
+
+#invoice br {
+  line-height: 2;
+}
+
+/* Divider */
+#invoice hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, #00cc44, #00ff66, #00cc44);
+  margin: 18px 0;
+}
+
+/* Products list */
+#invoice ul {
+  list-style: none;
+  padding: 0;
+}
+
+#invoice li {
+  background: #1a1a1a;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border-left: 5px solid #00ff66;
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+}
+
+/* Total */
+#invoice strong:last-child {
+  font-size: 20px;
+  color: #00ff99;
+}
+
+/* =============================
+   PRINT MODE (PDF / PRINTER)
+============================= */
+@media print {
+  body {
+    background: #ffffff;
+    color: #000;
+    padding: 0;
+  }
+
+  h2 {
+    color: #000;
+    text-shadow: none;
+  }
+
+  #invoice {
+    box-shadow: none;
+    border: 2px solid #000;
+    background: #fff;
+    color: #000;
+  }
+
+  #invoice strong {
+    color: #000;
+  }
+
+  #invoice li {
+    background: #f4f4f4;
+    box-shadow: none;
+    border-left: 4px solid #000;
+  }
+
+  hr {
+    background: #000;
+  }
+}
+</style>
+</head>
+<body>
+
+<h2>🧾 Facture</h2>
+
+<div id="invoice"></div>
+
+<script>
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+const orders = JSON.parse(localStorage.getItem("orders")) || [];
+const index = localStorage.getItem("invoiceIndex");
+
+if (!currentUser || index === null) {
+  alert("Erreur ❌");
+  window.close();
+}
+
+const myOrders = orders.filter(o => o.email === currentUser.email);
+const order = myOrders[index];
+
+const div = document.getElementById("invoice");
+
+div.innerHTML = `
+  <strong>Client:</strong> ${currentUser.name}<br>
+  <strong>Email:</strong> ${currentUser.email}<br>
+  <strong>Date:</strong> ${order.date}<br>
+  <strong>Paiement:</strong> ${order.payment}<br>
+  <strong>Statut:</strong> ${order.status}<br>
+
+  <hr>
+
+  <ul>
+    ${order.items.map(p => `<li>${p.name} - ${p.price} TND</li>`).join("")}
+  </ul>
+
+  <hr>
+
+  <strong>Total:</strong> ${order.total} TND
+`;
+
+window.print(); // ✅ Save as PDF / Print
+</script>
+
+</body>
+</html>
