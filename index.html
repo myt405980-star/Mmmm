@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Boutique</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* =============================
+   GENERAL
+============================= */
+body {
+  font-family: 'Arial Black', Gadget, sans-serif;
+  background: #0d0d0d; /* dark ultra */
+  color: #e6ffe6; /* light green text */
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+h1, h2, h3 {
+  color: #00FF66; /* neon green wow */
+  text-shadow: 2px 2px 5px #00CC44, 0 0 10px #00FF99;
+}
+
+/* =============================
+   NAVBAR
+============================= */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  background: #111;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  gap: 10px;
+  box-shadow: 0 5px 20px rgba(0,255,102,0.5);
+}
+
+nav a, nav button {
+  color: #00FF66;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid #00FF66;
+  background: linear-gradient(45deg, #00CC44, #00FF66);
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+nav a:hover, nav button:hover {
+  background: linear-gradient(45deg, #00FF99, #00CC44);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #00FF66;
+}
+
+/* =============================
+   ADMIN PANEL
+============================= */
+#admin-panel {
+  background: #1a1a1a;
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  box-shadow: 0 0 20px rgba(0,255,102,0.5);
+}
+
+#admin-panel input, #admin-panel button {
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: none;
+  width: 90%;
+  max-width: 300px;
+  font-weight: bold;
+}
+
+#admin-panel button {
+  background: linear-gradient(45deg, #00FF66, #00CC44);
+  color: #000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#admin-panel button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #00FF66;
+}
+
+/* =============================
+   PRODUCTS GRID (2 COLONNES)
+============================= */
+#products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  justify-items: center;
+}
+
+#products > div {
+  background: #222;
+  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+  max-width: 240px;
+  box-shadow: 0 8px 20px rgba(0,255,102,0.7);
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+#products > div:hover {
+  transform: translateY(-8px) scale(1.07);
+  box-shadow: 0 12px 30px rgba(0,255,102,1);
+}
+
+#products img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #00FF66;
+}
+
+#products strong {
+  display: block;
+  font-size: 1.2em;
+  margin-bottom: 5px;
+  color: #00FF66;
+  text-shadow: 1px 1px 5px #00CC44;
+}
+
+#products button {
+  margin-top: 12px;
+  padding: 10px 15px;
+  background: linear-gradient(45deg, #00FF66, #00CC44);
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#products button:hover {
+  background: linear-gradient(45deg, #00FF99, #00FF66);
+  transform: scale(1.1);
+  box-shadow: 0 0 12px #00FF66;
+}
+
+/* =============================
+   CART
+============================= */
+#cart {
+  background: #1a1a1a;
+  padding: 25px;
+  border-radius: 15px;
+  margin-top: 25px;
+  text-align: left;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 0 20px rgba(0,255,102,0.5);
+}
+
+#cart button {
+  margin-left: 5px;
+  padding: 6px 12px;
+  background: linear-gradient(45deg, #00FF66, #00CC44);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#cart button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #00FF66;
+}
+
+/* =============================
+   PAYMENT BOX
+============================= */
+#paymentBox {
+  display: none;
+  background: #1a1a1a;
+  padding: 30px;
+  border-radius: 15px;
+  border: 3px solid #00FF66;
+  max-width: 450px;
+  margin: 25px auto;
+  text-align: left;
+  box-shadow: 0 0 25px rgba(0,255,102,0.7);
+}
+
+#paymentBox input, #paymentBox select, #paymentBox button {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+}
+
+#paymentBox button {
+  background: linear-gradient(45deg, #00FF66, #00CC44);
+  color: #000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#paymentBox button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #00FF66;
+}
+
+/* =============================
+   MEDIA QUERIES (RESPONSIVE)
+============================= */
+@media (max-width: 650px) {
+  #products {
+    grid-template-columns: 1fr; /* 1 colonne sur mobile */
+  }
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+<span id="nav-user"></span>
+<a href="index.html">Accueil</a>
+<a href="login.html" id="loginLink">Login</a>
+<a href="register.html">register</a>
+
+<a href="orders.html">Commandes</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="my-orders.html">Mes commandes</a>
+<button id="logoutLink" onclick="logout()" style="display:none;">Logout</button>
+</nav>
+
+<h1 id="welcome"></h1>
+<p id="status"></p>
+
+<div id="admin-panel" style="display:none;">
+<h2>Admin Panel</h2>
+<input type="text" id="pname" placeholder="Nom du produit"><br><br>
+<input type="number" id="pprice" placeholder="Prix"><br><br>
+<input type="number" id="pqty" placeholder="Stock"><br><br>
+<input type="file" id="pimage" accept="image/*"><br><br>
+<button onclick="addProduct()">Ajouter produit</button>
+</div>
+
+<hr>
+
+<h2>Produits</h2>
+<div id="products"></div>
+
+<div id="cart" style="margin-top:20px;"></div>
+
+<div id="paymentBox">
+<h3>Paiement</h3>
+<select id="paymentMethod">
+<option value="">-- Choisir méthode --</option>
+<option value="cash">💵 Cash à la livraison</option>
+<option value="card">💳 Carte bancaire</option>
+</select><br><br>
+
+<label>🏙️ الولاية</label><br>
+<input type="text" id="wilaya"><br><br>
+<label>📍 المعتمدية</label><br>
+<input type="text" id="delegation"><br><br>
+<label>📞 رقم الهاتف</label><br>
+<input type="tel" id="phone"><br><br>
+
+<button onclick="confirmPayment()">Confirmer paiement</button>
+<button onclick="closePayment()">Annuler</button>
+</div>
+
+<button id="orderBtn" onclick="openPayment()">Commander</button>
+
+<script>
+/* ======= USER ======= */
+let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+const navUser=document.getElementById("nav-user");
+const loginLink=document.getElementById("loginLink");
+const logoutLink=document.getElementById("logoutLink");
+const adminPanel=document.getElementById("admin-panel");
+const orderBtn=document.getElementById("orderBtn");
+
+if(currentUser){
+  navUser.innerText="👤 "+currentUser.name;
+  loginLink.style.display="none";
+  logoutLink.style.display="inline-block";
+  document.getElementById("welcome").innerText="Bienvenue "+currentUser.name+" 👋";
+  document.getElementById("status").innerText="Connecté ✅";
+  if(currentUser.email==="admin@boutique.com"){ adminPanel.style.display="block"; }
+} else {
+  navUser.innerText="Visiteur";
+  document.getElementById("welcome").innerText="Bienvenue dans ma boutique 🛍️";
+  document.getElementById("status").innerText="Veuillez vous connecter";
+  orderBtn.style.display="none";
+}
+
+/* ======= LOGOUT ======= */
+function logout(){ 
+  localStorage.removeItem("currentUser"); 
+  window.location.href="login.html"; 
+}
+
+/* ======= DATA ======= */
+let products = JSON.parse(localStorage.getItem("products"))||[];
+let cart = JSON.parse(localStorage.getItem("cart"))||[];
+const productsDiv=document.getElementById("products");
+const cartDiv=document.getElementById("cart");
+
+/* ======= RENDER PRODUCTS ======= */
+function renderProducts(){
+productsDiv.innerHTML="";
+products.forEach((p,i)=>{
+const div=document.createElement("div");
+div.innerHTML=`<img src="${p.image}"><br><strong>${p.name}</strong><br>Prix: ${p.price} TND<br>
+Stock: ${p.qty}${currentUser && currentUser.email!=="admin@boutique.com"?(
+  p.qty>0?`<br><button onclick="addToCart(${i})">Ajouter au panier</button>`:
+  `<br><span style="color:red;">Rupture de stock</span>`):""}
+${currentUser && currentUser.email==="admin@boutique.com"?`<br><button onclick="deleteProduct(${i})">Supprimer</button>`:""}`;
+productsDiv.appendChild(div);
+});
+}
+
+/* ======= RENDER CART ======= */
+function renderCart(){
+let total=0; let html="<h2>Panier</h2>";
+if(cart.length===0){ html+="<p>Panier vide 🛒</p>"; }
+cart.forEach((item,i)=>{
+const itemTotal=item.price*item.qty;
+total+=itemTotal;
+html+=`<p>${item.name} - ${item.price} TND × ${item.qty} = <strong>${itemTotal} TND</strong>
+<button onclick="increaseQty(${i})">➕</button>
+<button onclick="decreaseQty(${i})">➖</button></p>`;
+});
+html+=`<strong>Total: ${total} TND</strong>`;
+cartDiv.innerHTML=html;
+}
+
+/* ======= ADMIN ======= */
+function addProduct(){
+const pname=document.getElementById("pname").value.trim();
+const pprice=Number(document.getElementById("pprice").value);
+const pqty=Number(document.getElementById("pqty").value);
+const file=document.getElementById("pimage").files[0];
+if(!pname || pprice<=0 || pqty<=0 || !file){ alert("❌ عمّر جميع الخانات"); return; }
+
+const reader=new FileReader();
+reader.onload=()=>{
+products.push({name:pname,price:pprice,qty:pqty,image:reader.result});
+localStorage.setItem("products",JSON.stringify(products));
+document.getElementById("pname").value="";
+document.getElementById("pprice").value="";
+document.getElementById("pqty").value="";
+document.getElementById("pimage").value="";
+renderProducts(); alert("✅ Produit ajouté");
+};
+reader.readAsDataURL(file);
+}
+
+function deleteProduct(i){ products.splice(i,1); localStorage.setItem("products",JSON.stringify(products)); renderProducts(); }
+
+/* ======= CART ======= */
+function addToCart(i){
+if(products[i].qty<=0){ alert("Produit non disponible ❌"); return; }
+products[i].qty--;
+const found=cart.find(x=>x.name===products[i].name);
+if(found){ found.qty++; }else{ cart.push({name:products[i].name,price:products[i].price,qty:1}); }
+localStorage.setItem("products",JSON.stringify(products));
+localStorage.setItem("cart",JSON.stringify(cart));
+renderProducts(); renderCart();
+}
+
+function increaseQty(i){
+const item=cart[i]; const product=products.find(p=>p.name===item.name);
+if(product.qty<=0){ alert("Stock insuffisant ❌"); return; }
+product.qty--; item.qty++;
+localStorage.setItem("products",JSON.stringify(products));
+localStorage.setItem("cart",JSON.stringify(cart));
+renderProducts(); renderCart();
+}
+
+function decreaseQty(i){
+const item=cart[i]; const product=products.find(p=>p.name===item.name);
+item.qty--; product.qty++;
+if(item.qty===0){ cart.splice(i,1); }
+localStorage.setItem("products",JSON.stringify(products));
+localStorage.setItem("cart",JSON.stringify(cart));
+renderProducts(); renderCart();
+}
+
+/* ======= PAYMENT ======= */
+const paymentBox=document.getElementById("paymentBox");
+function openPayment(){ if(!currentUser){ alert("لازم تعمل login قبل الدفع ❌"); window.location.href="login.html"; return; } if(cart.length===0){ alert("Panier vide ❌"); return; } paymentBox.style.display="block"; }
+function closePayment(){ paymentBox.style.display="none"; }
+
+function confirmPayment(){
+const method=document.getElementById("paymentMethod").value.trim();
+const wilaya=document.getElementById("wilaya").value.trim();
+const delegation=document.getElementById("delegation").value.trim();
+const phone=document.getElementById("phone").value.trim();
+if(!method || !wilaya || !delegation || !phone){ alert("عمّر جميع الخانات ❌"); return; }
+
+saveOrder(method,wilaya,delegation,phone);
+paymentBox.style.display="none";
+alert("Paiement réussi ✅");
+}
+
+function saveOrder(paymentMethod,wilaya,delegation,phone){
+let orders=JSON.parse(localStorage.getItem("orders"))||[];
+const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+
+// خصم الكمية من المنتجات بعد الدفع
+cart.forEach(item=>{
+const product=products.find(p=>p.name===item.name);
+if(product){ product.qty -= item.qty; if(product.qty<0) product.qty=0; }
+});
+
+orders.push({client:currentUser.name,email:currentUser.email,phone,wilaya,delegation,items:cart,total,payment:paymentMethod,status:"En attente",date:new Date().toLocaleString()});
+
+localStorage.setItem("orders",JSON.stringify(orders));
+localStorage.setItem("products",JSON.stringify(products));
+
+cart=[]; localStorage.setItem("cart",JSON.stringify(cart));
+renderCart(); renderProducts();
+}
+
+/* ======= INIT ======= */
+renderProducts();
+renderCart();
+
+</script>
+</body>
+</html>
