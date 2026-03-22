@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style.css">
+ 
+</head>
+
+<body>
+
+<h1>📊 Dashboard Admin</h1>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <h2 id="totalSales">0</h2>
+    <p>Chiffre d’affaire (TND)</p>
+  </div>
+
+  <div class="stat">
+    <h2 id="ordersCount">0</h2>
+    <p>Commandes</p>
+  </div>
+
+  <div class="stat">
+    <h2 id="productsSold">0</h2>
+    <p>Produits vendus</p>
+  </div>
+</div>
+
+<!-- LAST 5 ORDERS -->
+<div class="card">
+  <h2>📦 Dernières commandes (5 dernières)</h2>
+  <div id="lastOrders"></div>
+</div>
+
+<!-- ALL ORDERS DETAILED -->
+<div class="card">
+  <h2>📋 Toutes les commandes clients</h2>
+  <div id="allOrders"></div>
+</div>
+
+<!-- RESET BUTTON -->
+<button id="resetBtn" onclick="resetDashboard()" style="display:none;">
+🗑️ Reset Boutique (Tout supprimer)
+</button>
+
+<script>
+/* =====================
+   AUTH ADMIN
+===================== */
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+if (!currentUser || currentUser.email !== "admin@boutique.com") {
+  alert("Accès refusé ❌");
+  window.location.href = "index.html";
+}
+
+/* =====================
+   DATA
+===================== */
+const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+/* =====================
+   STATS CALCUL
+===================== */
+let totalSales = 0;
+let productsSold = 0;
+
+orders.forEach(order => {
+  totalSales += Number(order.total);
+  order.items.forEach(item => {
+    productsSold += item.qty;
+  });
+});
+
+document.getElementById("totalSales").innerText = totalSales;
+document.getElementById("ordersCount").innerText = orders.length;
+document.getElementById("productsSold").innerText = productsSold;
+
+/* =====================
+   LAST 5 ORDERS
+===================== */
+const lastOrdersDiv = document.getElementById("lastOrders");
+
+if (orders.length === 0) {
+  lastOrdersDiv.innerHTML = "<p>Aucune commande</p>";
+} else {
+  orders.slice(-5).reverse().forEach(o => {
+    lastOrdersDiv.innerHTML += `
+      <div class="order">
+        <strong>${o.client}</strong><br>
+        💰 ${o.total} TND<br>
+        💳 ${o.payment}<br>
+        📅 ${o.date}
+      </div>
+    `;
+  });
+}
+
+/* =====================
+   ALL ORDERS DETAILED
+===================== */
+const allOrdersDiv = document.getElementById("allOrders");
+
+if(orders.length === 0){
+    allOrdersDiv.innerHTML = "<p>Aucune commande</p>";
+} else {
+    orders.slice().reverse().forEach(o=>{
+        let itemsHtml = "";
+        o.items.forEach(item=>{
+            itemsHtml += `${item.name} × ${item.qty} = ${item.price*item.qty} TND<br>`;
+        });
+
+        const div = document.createElement("div");
+        div.className = "order";
+        div.innerHTML = `
+            <strong>Client:</strong> ${o.client}<br>
+            <strong>Email:</strong> ${o.email}<br>
+            <strong>Phone:</strong> ${o.phone}<br>
+            <strong>Wilaya:</strong> ${o.wilaya}<br>
+            <strong>Delegation:</strong> ${o.delegation}<br>
+            <strong>Produits:</strong><br>${itemsHtml}
+            <strong>Total:</strong> ${o.total} TND<br>
+            <strong>Méthode:</strong> ${o.payment}<br>
+            <strong>Status:</strong> ${o.status}<br>
+            <strong>Date:</strong> ${o.date}
+        `;
+        allOrdersDiv.appendChild(div);
+    });
+}
+
+/* =====================
+   RESET BOUTIQUE
+===================== */
+function resetDashboard() {
+  const ok = confirm(
+    "⚠️ تحب تمسح كل المنتجات، الطلبات، والكارت وترجع من الأول؟"
+  );
+
+  if (!ok) return;
+
+  localStorage.removeItem("products");
+  localStorage.removeItem("orders");
+  localStorage.removeItem("cart");
+
+  alert("✅ تمّت إعادة التهيئة بنجاح");
+  location.reload();
+}
+
+/* =====================
+   SHOW RESET BUTTON
+===================== */
+document.getElementById("resetBtn").style.display = "block";
+</script>
+
+</body>
+</html>
